@@ -1,0 +1,82 @@
+openapi: 3.0.3
+info:
+  title: Swagger OpenAPI 3.0
+  version: 1.0.11
+servers:
+  - url: http://city-calculation.swagger.io/api/v3
+#Objects
+tags:
+  - name: Calculate
+    description: Calculate city points
+    
+#URLS    
+paths:
+  /calculate/between-max-and-min-populated:
+    get: 
+      tags:
+        - Calculate
+      summary: Returns length of distance with specified coordinates
+      description: Returns length of distance with specified coordinates
+      operationId: getLengthOfDistance
+      responses:
+        '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                    type: object
+                    properties:
+                      distanceLength:
+                        type: integer
+                        example: 145213
+        '400':
+          description: Invalid data
+        '404':
+          description: Not found
+                  
+      
+      
+  /calculate/to-newest:
+    get: 
+      tags:
+        - Calculate
+      summary: Returns length of distance with specified coordinates
+      description: Returns length of distance with specified coordinates
+      operationId: CalculateLength
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                  type: object
+                  properties:
+                    distance:
+                      type: integer
+                      example: 223432
+        '400':
+          description: Invalid data
+        '404':
+          description: Not found
+      # parameters:
+      #   - name: firstCoordinate
+      #     in: query
+      #     description: a
+      #     required: true
+      #     schema:
+      #       type: number
+      #       format: double
+      #   - name: secondCoordinate
+      #     in: query
+      #     description: b
+      #     required: true
+      #     schema:
+      #       type: number
+      #       format: double
+      #   - name: thirdCoordinate
+      #     in: query
+      #     description: c
+      #     required: true
+      #     schema:
+            # type: number
+            # format: double
