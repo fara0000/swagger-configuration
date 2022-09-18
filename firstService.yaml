@@ -1,0 +1,347 @@
+openapi: 3.0.3
+info:
+  title: Swagger OpenAPI 3.0
+  version: 1.0.11
+servers:
+  - url: https://city.swagger.io/api/v3
+#Objects
+tags:
+  - name: City
+    description: Everything about your Cities
+  - name: CityAdditionalOperations
+    description: Additional apis for City
+    
+#URLS    
+paths:
+  /city:
+    put:
+      tags:
+        - City
+      summary: Update an existing city
+      description: Update an existing pet by Id
+      operationId: updateCity
+      requestBody:
+        description: Update an existent pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/City'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/City'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: City not found
+        '405':
+          description: Validation exception
+      # security:
+      #   - petstore_auth:
+      #       - write:city
+      #       - read:city'
+    post:
+      tags:
+        - City
+      summary: Create new city
+      description: Create new city
+      operationId: createCity
+      requestBody:
+        description: Create a new pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/City'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/City'
+        '405':
+          description: Invalid input
+    get:
+      tags:
+        - City
+      summary: Returns pet inventories by status
+      description: Returns a map of status codes to quantities
+      operationId: getInventory
+      parameters:
+        - name: limit
+          in: query
+          description: City ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: City ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: fields
+          schema:
+            $ref: "#/components/schemas/City"
+        - in: query
+          name: sort
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+              - id
+              - name
+              - coordinates
+              - creationDate
+              - area
+              - population
+              - metersAboveSeaLevel
+              - climate
+              - government
+              - standardOfLiving
+              - governor
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/City'
+  /city/{cityId}:
+    get:
+      tags:
+        - City
+      summary: Find city by ID
+      description: Returns a single city
+      operationId: getCityById
+      parameters:
+        - name: cityId
+          required: true
+          in: path
+          description: ID of city to return
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/City'          
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: City not found
+    delete:
+      tags:
+        - City
+      summary: Delete city by id
+      description: Deletes city by id
+      operationId: deleteCity
+      parameters:
+        - name: cityId
+          in: path
+          description: City id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: City with 10 id deleted
+        '400':
+          description: Invalid city id
+  
+  /city/metersAboveSeaLevel/average:
+    get:
+      tags:
+        - CityAdditionalOperations
+      summary: Returns Average of meters above Sea level in all cities
+      description: Returns Average of meters above Sea level in all cities
+      operationId: getAverageOfMetersAboveSeaLevel
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  avarage: 
+                    type: integer
+                    example: 256
+        '400':
+          description: Invalid data
+        '404':
+          description: Not found
+  
+  /city/creationDateGroup/quantity:
+    get:
+      tags:
+        - CityAdditionalOperations
+      summary: Returns Average of meters above Sea level in all cities
+      description: Returns Average of meters above Sea level in all cities
+      operationId: getQuantityByCreationDateGroup
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    groupName:
+                      type: string
+                      example: 'firstGroup'
+                    quantity:
+                      type: integer
+                      example: 145
+        '400':
+          description: Invalid data
+        '404':
+          description: Not found
+  
+  /city/name:
+    get:
+      tags:
+        - CityAdditionalOperations
+      summary: Returns array of objects that have specified name param
+      description: Returns array of objects that have specified name param
+      operationId: getCitiesWithSameName
+      parameters:
+        - name: cityName
+          in: query
+          description: City Name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/City'
+        '400':
+          description: Invalid data
+        '404':
+          description: Not found
+  
+# SCHEMAS          
+components:
+  schemas:
+    City:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          uniqueItems: true
+          nullable: false
+          format: int64
+          example: 10
+        name:
+          type: string
+          minLength: 1
+          nullable: false
+          example: Moscow
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        creationDate:
+          type: string
+          nullable: false
+          format: date-time
+          example: '02-11-1147'
+        area:
+          type: integer
+          minimum: 1
+          format: int64
+          example: 86000
+        population:
+          type: integer
+          minimum: 1
+          nullable: false
+          format: int64
+          example: 9600000
+        metersAboveSeaLevel:
+          type: integer
+          nullable: false
+          format: int64
+          example: 2300
+        climate:
+          $ref: '#/components/schemas/Climate'
+        government:
+          $ref: '#/components/schemas/Government'
+        standardOfLiving:
+          $ref: '#/components/schemas/StandartOfLiving'
+        governor:
+          $ref: '#/components/schemas/Human'
+      xml:
+        name: city
+    Coordinates:
+      type: object
+      nullable: false
+      properties:
+        x:
+          type: number
+          format: float
+          example: 86.0
+        y: 
+          type: integer
+          format: int64
+          example: 123
+    Human:
+      type: object
+      nullable: false
+      properties:
+        age:
+          type: integer
+          format: int32
+          example: 21
+        height:
+          type: number
+          format: double
+          example: 180.3
+        birthday:
+          type: string
+          format: date-time
+          example: '02-12-2000'
+    Climate:
+      type: string
+      nullable: false
+      enum:
+        - TROPICAL_SAVANNA
+        - OCEANIC
+        - STEPPE
+    Government:
+      type: string
+      nullable: false
+      enum:
+        - PUPPET_STATE
+        - OLIGARCHY
+        - THALASSOCRACY
+        - THEOCRACY
+    StandartOfLiving:
+      type: string
+      nullable: false
+      enum:
+        - ULTRA_HIGH
+        - MEDIUM
+        - LOW
+        - VERY_LOW
+        - NIGHTMARE
