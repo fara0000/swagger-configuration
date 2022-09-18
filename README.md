@@ -1,4 +1,4 @@
-# Swagger OpenApi configuration
+# Swagger OpenAPI configuration
 
 Разработать спецификацию в формате OpenAPI для набора веб-сервисов, реализующего следующую функциональность:
 
